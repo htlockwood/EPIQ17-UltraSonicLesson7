@@ -1,5 +1,6 @@
 //Lesson 7 UltrasonicSensor 2017 using enamile painted bricks 
 //New solution robot 7/17/2017
+//now I need to figure how to the it to find the walls and turn away from the wall. 
 use Libraries.Robots.Lego.Motor
 use Libraries.Robots.Lego.ColorSensor
 use Libraries.Robots.Lego.Utility
