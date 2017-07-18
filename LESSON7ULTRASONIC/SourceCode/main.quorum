@@ -29,8 +29,86 @@ ultrasonicSensor:SetPort(2)
 gyroSensor:SetPort(3) //not used
 touchSensor:SetPort(4)
 // A few variables
+integer speed=50
 integer leftspeed=50
 integer rightspeed=50
+integer volume=50
 
 
+
+//output to screen 
+    screen:OutputCenterLarge("BAT ", 1)
+    screen:OutputCenter("<-- soft|loud -->", 4)
+    screen:OutputCenter("^-Faster|v-slower", 5)  
+//set button fuctions
+repeat until touchSensor:IsPressed()
+    sound:SetVolume(volume)     
+    sound:PlayTone(440, 10)
+    sound:SetVolume(10)
+    sound:PlayTone(410, 25) 
+    button:SetLightPattern(7)
+    if button:IsButtonPressed(button:LEFT_BUTTON)
+        volume=volume-10
+        if volume >100
+            volume=100
+        end //end of if statement
+    elseif button:IsButtonPressed(button:RIGHT_BUTTON)
+        volume=volume+10
+        if volume <1
+            volume=10
+        end
+    elseif button:IsButtonPressed(button:UP_BUTTON)
+        speed =speed+10
+        if speed> 200
+           speed=200
+        end
+    elseif button:IsButtonPressed(button:DOWN_BUTTON)
+            speed =speed-10
+        if speed< 10
+           speed=10
+        end
+    end //end of if/else statements
+end //end of button fuctions repeat loop
+leftspeed=speed
+rightspeed=speed
+motor:SetSpeed("B",leftspeed)
+motor:SetSpeed("C",rightspeed)
+
+//delay after user presses center to let go of robot
+screen:Clear()
+sound:SetVolume(volume) 
+sound:PlayTone(110, 1000)
+repeat 3 times
+sound:PlayTone(55, 100)
+sound:PlayTone(110, 200)
+sound:PlayTone(55, 100)
+end //end of repeat
+sound:PlayTone(55, 1000)
+
+repeat until touchSensor:IsPressed()//check if to touch sensor is pressed
+// i need to think about this, the behaviour I want is turn away from a wall. It could be left or right. 
+    if ultrasonicSensor:GetDistance() < 0.5  //have the robot 
+        motor:SetSpeed("B",20)
+        motor:SetSpeed("C",20)
+        motor:RotateBackward("B")
+        motor:RotateBackward("C")
+        sound:PlayTone(333, 400)
+        sound:PlayTone(220, 400)
+        motor:RotateBackward("B")
+        motor:RotateForward("C")
+        sound:PlayTone(110, 350)
+        sound:PlayTone(220, 345)
+        sound:PlayTone(110, 330)
+    end //end of if ultrasonicSensor < distance
+    //Normal Robot movement
+    motor:SetSpeed("B",speed)
+    motor:SetSpeed("C",speed)
+    motor:RotateForward("B")
+    motor:RotateForward("C")
+    sound:PlayTone(880, 10)
+
+end //End of repeat until touchSensor2:IsPressed() Upward Sensor
+motor:Stop("B")
+motor:Stop("C")
+sound:PlayTone(220, 2000)
 
