@@ -1,6 +1,5 @@
-//Lesson 7 UltrasonicSensor 2017 using enamile painted bricks 
-//New solution robot 7/17/2017
-//now I need to figure how to the it to find the walls and turn away from the wall. 
+//Lesson 7 UltrasonicSensor 2017
+//New solution robot 7/19/2017 a
 use Libraries.Robots.Lego.Motor
 use Libraries.Robots.Lego.ColorSensor
 use Libraries.Robots.Lego.Utility
@@ -30,9 +29,9 @@ ultrasonicSensor:SetPort(2)
 gyroSensor:SetPort(3) //not used
 touchSensor:SetPort(4)
 // A few variables
-integer speed=50
-integer leftspeed=50
-integer rightspeed=50
+integer speed=64
+integer leftspeed=64
+integer rightspeed=64
 integer volume=50
 
 
@@ -86,27 +85,31 @@ sound:PlayTone(55, 100)
 end //end of repeat
 sound:PlayTone(55, 1000)
 
-repeat until touchSensor:IsPressed()//check if to touch sensor is pressed
-// i need to think about this, the behaviour I want is turn away from a wall. It could be left or right. 
-    if ultrasonicSensor:GetDistance() < 0.5  //have the robot 
-        motor:SetSpeed("B",20)
-        motor:SetSpeed("C",20)
-        motor:RotateBackward("B")
-        motor:RotateBackward("C")
-        sound:PlayTone(333, 400)
-        sound:PlayTone(220, 400)
-        motor:RotateBackward("B")
-        motor:RotateForward("C")
-        sound:PlayTone(110, 350)
-        sound:PlayTone(220, 345)
-        sound:PlayTone(110, 330)
-    end //end of if ultrasonicSensor < distance
-    //Normal Robot movement
-    motor:SetSpeed("B",speed)
-    motor:SetSpeed("C",speed)
+repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
+    if ultrasonicSensor:GetDistance() < 0.5  //have the robot slow down and turn left or right
+    motor:SetSpeed("B",rightspeed/2)
+    motor:SetSpeed("C",leftspeed/2)
     motor:RotateForward("B")
     motor:RotateForward("C")
-    sound:PlayTone(880, 10)
+        number DistanceSampleA = ultrasonicSensor:GetDistance()
+        utility:DelayMilliseconds(20)
+        number DistanceSampleB = ultrasonicSensor:GetDistance()
+        if DistanceSampleA > DistanceSampleB //robot is getting closer to an object!!!
+            motor:SetSpeed("B",rightspeed/4)
+            motor:RotateForward("B")
+            utility:DelayMilliseconds(20)
+        else if DistanceSampleA < DistanceSampleB
+            motor:SetSpeed("C",leftspeed/4)
+            motor:RotateForward("C")
+            utility:DelayMilliseconds(20)
+        end
+        end
+    end //end of if ultrasonicSensor < distance
+    //Normal Robot movement, Roll straight head
+    motor:SetSpeed("B",rightspeed)
+    motor:SetSpeed("C",leftspeed)
+    motor:RotateForward("B")
+    motor:RotateForward("C")
 
 end //End of repeat until touchSensor2:IsPressed() Upward Sensor
 motor:Stop("B")
