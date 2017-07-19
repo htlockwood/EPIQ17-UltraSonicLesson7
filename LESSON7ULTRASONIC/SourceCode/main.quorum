@@ -1,5 +1,5 @@
 //Lesson 7 UltrasonicSensor 2017
-//New solution robot 7/19/2017 a
+//New solution robot 7/19/2017 now updated and ready to test
 use Libraries.Robots.Lego.Motor
 use Libraries.Robots.Lego.ColorSensor
 use Libraries.Robots.Lego.Utility
@@ -33,9 +33,6 @@ integer speed=64
 integer leftspeed=64
 integer rightspeed=64
 integer volume=50
-
-
-
 //output to screen 
     screen:OutputCenterLarge("BAT ", 1)
     screen:OutputCenter("<-- soft|loud -->", 4)
