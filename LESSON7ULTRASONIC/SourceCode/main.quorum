@@ -29,9 +29,9 @@ ultrasonicSensor:SetPort(2)
 gyroSensor:SetPort(3) //not used
 touchSensor:SetPort(4)
 // A few variables
-integer speed=64
-integer leftspeed=64
-integer rightspeed=64
+integer speed=32
+integer leftspeed=speed
+integer rightspeed=speed
 integer volume=50
 //output to screen 
     screen:OutputCenterLarge("BAT ", 1)
@@ -55,23 +55,21 @@ repeat until touchSensor:IsPressed()
             volume=10
         end
     elseif button:IsButtonPressed(button:UP_BUTTON)
-        speed =speed+10
-        if speed> 200
-           speed=200
+        speed =speed*2
+        if speed> 256
+           speed=256
         end
     elseif button:IsButtonPressed(button:DOWN_BUTTON)
-            speed =speed-10
-        if speed< 10
-           speed=10
+            speed =speed/2
+        if speed< 2
+           speed= 2
         end
     end //end of if/else statements
 end //end of button fuctions repeat loop
-leftspeed=speed
-rightspeed=speed
 motor:SetSpeed("B",leftspeed)
 motor:SetSpeed("C",rightspeed)
 
-//delay after user presses center to let go of robot
+//delay after user presses center to let go of robot (3 seconds)
 screen:Clear()
 sound:SetVolume(volume) 
 sound:PlayTone(110, 1000)
@@ -81,19 +79,22 @@ sound:PlayTone(110, 200)
 sound:PlayTone(55, 100)
 end //end of repeat
 sound:PlayTone(55, 1000)
+//the delay is now over
 
 repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
     if ultrasonicSensor:GetDistance() < 0.5  //have the robot slow down and turn left or right
-    motor:SetSpeed("B",rightspeed/2)
-    motor:SetSpeed("C",leftspeed/2)
+    motor:SetSpeed("B",rightspeed/2) //slowdown
+    motor:SetSpeed("C",leftspeed/4) //turn left
     motor:RotateForward("B")
     motor:RotateForward("C")
         number DistanceSampleA = ultrasonicSensor:GetDistance()
-        utility:DelayMilliseconds(20)
+        utility:DelayMilliseconds(20) // what number makes works here???
         number DistanceSampleB = ultrasonicSensor:GetDistance()
         if DistanceSampleA > DistanceSampleB //robot is getting closer to an object!!!
-            motor:SetSpeed("B",rightspeed/4)
+            motor:SetSpeed("B",rightspeed/4) //Turn to the right
+            motor:SetSpeed("C",leftspeed/2)
             motor:RotateForward("B")
+            motor:RotateForward("C") // do I need this command?
             utility:DelayMilliseconds(20)
         else if DistanceSampleA < DistanceSampleB
             motor:SetSpeed("C",leftspeed/4)
