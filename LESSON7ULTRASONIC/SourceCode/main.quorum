@@ -1,5 +1,5 @@
 //Lesson 7 UltrasonicSensor 2017
-//New solution robot 7/19/2017 now updated and ready to test
+//New solution robot 7/21/2017 now updated and ready to test ... 
 use Libraries.Robots.Lego.Motor
 use Libraries.Robots.Lego.ColorSensor
 use Libraries.Robots.Lego.Utility
@@ -113,4 +113,5 @@ end //End of repeat until touchSensor2:IsPressed() Upward Sensor
 motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(220, 2000)
+//The End
 
