@@ -23,8 +23,10 @@ integer rightspeed=speed
 integer volume=16
 integer y =1
 //output to screen 
-    screen:OutputCenterLarge("BAT ", 3)
-
+    screen:OutputCenterLarge("BAT ", 1)
+    screen:OutputCenter("Press Touch Switch", 4)
+    screen:OutputCenter("  To Start", 5)
+    screen:OutputCenter("  And End", 6)
 //set button fuctions
 repeat until touchSensor:IsPressed()
     sound:SetVolume(volume)     
@@ -55,4 +57,3 @@ motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(440, 2000)
 //The End
-
