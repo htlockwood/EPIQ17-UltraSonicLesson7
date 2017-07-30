@@ -8,7 +8,6 @@ use Libraries.Robots.Lego.TouchSensor
 use Libraries.Robots.Lego.UltrasonicSensor
 //instantiate actions
 Motor motor
-Utility utility
 Screen screen
 Sound sound
 Button button
