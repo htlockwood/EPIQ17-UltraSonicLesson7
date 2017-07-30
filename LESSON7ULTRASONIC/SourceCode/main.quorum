@@ -1,13 +1,11 @@
 //Lesson 8.4 UltrasonicSensor 2017
 //New solution robot 7/28/2017 now updated and cleaned up ... 
 use Libraries.Robots.Lego.Motor
-use Libraries.Robots.Lego.Utility
 use Libraries.Robots.Lego.Screen
 use Libraries.Robots.Lego.Sound
 use Libraries.Robots.Lego.Button
 use Libraries.Robots.Lego.TouchSensor
 use Libraries.Robots.Lego.UltrasonicSensor
-
 //instantiate actions
 Motor motor
 Utility utility
@@ -16,59 +14,46 @@ Sound sound
 Button button
 TouchSensor touchSensor
 UltrasonicSensor ultrasonicSensor
-
 //set sensor ports 
 ultrasonicSensor:SetPort(2) 
 touchSensor:SetPort(4)
-
 // A few variables
-integer speed=32
+integer speed=64
 integer leftspeed=speed
 integer rightspeed=speed
 integer volume=16
+integer y =1
 //output to screen 
     screen:OutputCenterLarge("BAT ", 3)
 
 //set button fuctions
 repeat until touchSensor:IsPressed()
     sound:SetVolume(volume)     
-    sound:PlayTone(440, 10)
-    sound:SetVolume(volume*2)
-    sound:PlayTone(410, 25) 
+    sound:PlayTone(330, 125)
+    sound:PlayTone(410, 125) 
     button:SetLightPattern(7)
-
 end //end of button fuctions repeat loop
-motor:SetSpeed("B",leftspeed)
-motor:SetSpeed("C",rightspeed)
-
-//delay after user presses center to let go of robot (3 seconds)
-screen:Clear()
+screen:Clear()//delay after user presses center to let go of robot (3 seconds)
 sound:SetVolume(volume) 
 sound:PlayTone(220, 1000)
-sound:PlayTone(220, 1000)
-sound:PlayTone(220, 1000)
-//the delay is now over
-
+sound:PlayTone(110, 1000) //the delay is now over
 repeat until touchSensor:IsPressed()//check if to touch sensor is pressed 
-    if ultrasonicSensor:GetDistance() < 0.4  //have the robot turn right
-    motor:SetSpeed("B",rightspeed) 
-    motor:SetSpeed("C",leftspeed)
-    motor:RotateForward("B")
-    motor:RotateBackward("C") //This makes the robot spin in at current location
-    sound:PlayTone(660,600)
-    //utility:DelayMilliseconds(100) // what number makes works here???
-else
-    //Normal Robot movement, Roll straight head
-    motor:SetSpeed("B",rightspeed)
-    motor:SetSpeed("C",leftspeed+1)
-    motor:RotateForward("B")
-    motor:RotateForward("C")
-    sound:PlayTone(440,2)
+    if ultrasonicSensor:GetDistance() < 0.5  //have the robot turn right
+        motor:SetSpeed("B",rightspeed) 
+        motor:SetSpeed("C",leftspeed)
+        motor:RotateForward("B")
+        motor:RotateBackward("C") //This makes the robot spin in at current location
+        sound:PlayTone(440,5)
+    else //Normal Robot movement, Roll straight head
+        motor:SetSpeed("B",rightspeed)
+        motor:SetSpeed("C",leftspeed)
+        motor:RotateForward("B")
+        motor:RotateForward("C")
+        sound:PlayTone(880,2)
+    end  
 end //End of repeat until touchSensor2:IsPressed() Upward Sensor
-end
 motor:Stop("B")
 motor:Stop("C")
 sound:PlayTone(440, 2000)
-
 //The End
 
